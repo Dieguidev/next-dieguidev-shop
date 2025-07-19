@@ -1,8 +1,8 @@
 
-export default function CartPage() {
+export default function CategoryPage() {
   return (
     <div>
-      <h1>Cart Page</h1>
+      <h1>Category Page</h1>
     </div>
   );
 }
