@@ -1,6 +1,7 @@
 import { ProductsGrid, Title } from "@/components";
 import { Category } from "@/interfaces";
 import { initialData } from "@/seed/seed";
+import { notFound } from "next/navigation";
 
 interface CategoryPageProps {
   params: { id: Category };
@@ -13,6 +14,10 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   const categoryProducts = products.filter(
     (product) => product.gender === id
   );
+
+  if (categoryProducts.length === 0) {
+    notFound();
+  }
 
   const labels: Record<Category, string> = {
     'men': 'para hombres',
