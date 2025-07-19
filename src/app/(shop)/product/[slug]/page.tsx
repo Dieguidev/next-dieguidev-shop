@@ -25,7 +25,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
         <ProductSlideshow
           images={product.images}
           title={product.title}
-
         />
       </div>
       {/* Detalles */}
