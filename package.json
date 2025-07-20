@@ -29,6 +29,9 @@
     "lint": "next lint",
     "seed": "ts-node src/seed/seed-database.ts"
   },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "dependencies": {
     "@prisma/client": "^6.12.0",
     "clsx": "^2.1.1",
