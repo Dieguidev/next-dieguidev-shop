@@ -44,11 +44,12 @@ Dieguidev Shop es una aplicación e-commerce moderna, desarrollada como parte de
 - `build` — Compila la app para producción (`next build`)
 - `start` — Inicia la app en modo producción (`next start`)
 - `lint` — Linting con ESLint (`next lint`)
+- `seed` — Ejecuta el script de semilla de base de datos (`ts-node src/seed/seed-database.ts`)
 
 ## Dependencias clave
 
 - `next@15.4.2`, `react@19.1.0`, `typescript@^5`, `tailwindcss@^4`, `prisma`, `@prisma/client`, `zustand`, `swiper`, `clsx`, `react-icons`
-- Dev: `eslint`, `eslint-config-next`, `@types/*`, `@tailwindcss/postcss`, `typescript`
+- Dev: `eslint`, `eslint-config-next`, `@types/*`, `@tailwindcss/postcss`, `typescript`, `ts-node`
 
 ## Estructura del proyecto
 
@@ -78,7 +79,7 @@ Dieguidev Shop es una aplicación e-commerce moderna, desarrollada como parte de
 │   ├── components/       # Componentes reutilizables (UI, product, etc)
 │   ├── config/           # Configuración de fuentes y utilidades
 │   ├── interfaces/       # Tipos y contratos TypeScript
-│   ├── seed/             # Datos iniciales y semilla
+│   ├── seed/             # Datos iniciales y semilla (TypeScript, tsconfig propio)
 │   ├── store/            # Estado global (Zustand)
 │   └── ...
 ├── prisma/               # Esquema y migraciones Prisma
@@ -91,6 +92,8 @@ Dieguidev Shop es una aplicación e-commerce moderna, desarrollada como parte de
 - Incluye `docker-compose.yml` para levantar servicios como PostgreSQL fácilmente en desarrollo.
 - Usa `.env.template` como base para tus variables de entorno.
 - Recomendado: crear `.env` a partir de `.env.template` y personalizar según tu entorno.
+- El directorio `prisma/` contiene el esquema y migraciones de base de datos.
+- El directorio `src/seed/` contiene los datos iniciales y el script de semilla en TypeScript, con su propio `tsconfig.json`.
 
 ## Instalación y primeros pasos
 
@@ -118,7 +121,7 @@ Dieguidev Shop es una aplicación e-commerce moderna, desarrollada como parte de
 5. **Ejecuta las migraciones y la semilla de la base de datos:**
    ```bash
    npx prisma migrate dev
-   npx prisma db seed
+   npm run seed
    ```
 6. **Inicia el servidor de desarrollo:**
    ```bash
