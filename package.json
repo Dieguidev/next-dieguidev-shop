@@ -27,7 +27,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed": "ts-node src/seed/seed-database.ts"
+    "seed2": "ts-node src/seed/seed-database.ts",
+    "seed": "prisma db seed"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
