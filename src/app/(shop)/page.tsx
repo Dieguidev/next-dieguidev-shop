@@ -1,5 +1,6 @@
 import { getPaginatedProductsWithImages } from "@/actions";
 import { ProductsGrid, Title } from "@/components";
+import { redirect } from "next/navigation";
 
 interface HomeProps {
   searchParams?: {
@@ -8,12 +9,17 @@ interface HomeProps {
 }
 
 export default async function Home({ searchParams }: HomeProps) {
+  const params = await searchParams;
 
-  const page = searchParams?.page ? parseInt(searchParams.page) : 1;
+  const page = params?.page ? parseInt(params.page) : 1;
 
-  const { products } = await getPaginatedProductsWithImages({ page });
+  const { products, totalPages, currentPage } = await getPaginatedProductsWithImages({ page });
 
-  console.log(searchParams);
+  console.log(totalPages, currentPage);
+
+  if (products.length === 0) {
+    redirect('/')
+  }
 
 
   return (
