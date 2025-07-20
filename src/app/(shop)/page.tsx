@@ -1,9 +1,21 @@
+import { getPaginatedProductsWithImages } from "@/actions";
 import { ProductsGrid, Title } from "@/components";
-import { initialData } from "@/seed/seed";
 
-const products = initialData.products;
+interface HomeProps {
+  searchParams?: {
+    page?: string;
+  };
+}
 
-export default function Home() {
+export default async function Home({ searchParams }: HomeProps) {
+
+  const page = searchParams?.page ? parseInt(searchParams.page) : 1;
+
+  const { products } = await getPaginatedProductsWithImages({ page });
+
+  console.log(searchParams);
+
+
   return (
     <>
       <Title
