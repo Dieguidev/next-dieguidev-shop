@@ -53,64 +53,90 @@ Dieguidev Shop es una aplicación e-commerce moderna, desarrollada como parte de
 ## Estructura del proyecto
 
 ```
-├── public/
-│   ├── imgs/           # Imágenes generales
-│   └── products/       # Imágenes de productos
+├── .env.template         # Plantilla de variables de entorno
+├── .gitignore            # Exclusiones de git
+├── docker-compose.yml    # Configuración para entornos Docker/Postgres
+├── eslint.config.mjs     # Configuración ESLint
+├── next.config.ts        # Configuración Next.js
+├── package.json          # Dependencias y scripts
+├── postcss.config.mjs    # Configuración PostCSS
+├── public/               # Recursos públicos (imgs, products)
 ├── src/
-│   ├── app/            # Rutas y páginas Next.js
-│   │   ├── (shop)/     # Secciones principales de la tienda
-│   │   ├── auth/       # Login, registro, layout auth
-│   │   ├── cart/       # Carrito de compras
-│   │   ├── checkout/   # Checkout y dirección
-│   │   ├── orders/     # Listado y detalle de órdenes
-│   │   └── ...
-│   ├── components/     # Componentes reutilizables (UI, product, etc)
-│   ├── interfaces/     # Tipos y contratos TypeScript
-│   ├── seed/           # Datos iniciales y semilla
+│   ├── app/              # Rutas y páginas Next.js
+│   │   ├── (shop)/       # Secciones principales de la tienda
+│   │   │   ├── admin/    # Panel de administración
+│   │   │   ├── cart/     # Carrito de compras
+│   │   │   ├── category/ # Categorías
+│   │   │   ├── checkout/ # Checkout y dirección
+│   │   │   ├── empty/    # Página de carrito vacío
+│   │   │   ├── orders/   # Listado y detalle de órdenes
+│   │   │   ├── product/  # Detalle de producto
+│   │   │   ├── products/ # Listado de productos
+│   │   │   └── ...
+│   │   ├── auth/         # Login, registro, layout auth
+│   │   └── layout.tsx    # Layout global
+│   ├── components/       # Componentes reutilizables (UI, product, etc)
+│   ├── config/           # Configuración de fuentes y utilidades
+│   ├── interfaces/       # Tipos y contratos TypeScript
+│   ├── seed/             # Datos iniciales y semilla
+│   ├── store/            # Estado global (Zustand)
 │   └── ...
-├── prisma/             # Esquema y migraciones Prisma
-├── package.json        # Dependencias y scripts
-├── tailwind.config.js  # Configuración Tailwind
-├── tsconfig.json       # Configuración TypeScript
-└── README.md           # Este archivo
+├── prisma/               # Esquema y migraciones Prisma
+├── tsconfig.json         # Configuración TypeScript
+└── README.md             # Este archivo
 ```
 
-## Instalación y uso
+## Despliegue y entorno
+
+- Incluye `docker-compose.yml` para levantar servicios como PostgreSQL fácilmente en desarrollo.
+- Usa `.env.template` como base para tus variables de entorno.
+- Recomendado: crear `.env` a partir de `.env.template` y personalizar según tu entorno.
+
+## Instalación y primeros pasos
 
 1. **Clona el repositorio:**
    ```bash
    git clone https://github.com/Dieguidev/next-dieguidev-shop.git
    cd next-dieguidev-shop
    ```
-2. **Instala dependencias:**
+2. **Configura las variables de entorno:**
+   - Copia el archivo `.env.template` y renómbralo a `.env`:
+     ```bash
+     cp .env.template .env
+     ```
+   - Edita `.env` y coloca tu cadena de conexión de PostgreSQL en la variable `DATABASE_URL`.
+3. **Levanta la base de datos con Docker (opcional pero recomendado):**
+   - Si tienes Docker instalado, ejecuta:
+     ```bash
+     docker-compose up -d
+     ```
+   - Esto creará un contenedor de PostgreSQL accesible en `localhost:5432`.
+4. **Instala las dependencias:**
    ```bash
    npm install
    ```
-3. **Configura la base de datos:**
-   - Crea un archivo `.env` con tu cadena de conexión a PostgreSQL.
-   - Ejecuta las migraciones y la semilla:
-     ```bash
-     npx prisma migrate dev
-     npx prisma db seed
-     ```
-4. **Inicia el servidor de desarrollo:**
+5. **Ejecuta las migraciones y la semilla de la base de datos:**
+   ```bash
+   npx prisma migrate dev
+   npx prisma db seed
+   ```
+6. **Inicia el servidor de desarrollo:**
    ```bash
    npm run dev
    ```
 
-## Buenas prácticas
+> Si necesitas acceder a la base de datos visualmente, puedes usar Prisma Studio:
+>
+> ```bash
+> npx prisma studio
+> ```
 
-- Commits profesionales y descriptivos (en inglés)
-- Uso de ramas por feature: `feature/nombre-descriptivo`
-- Código tipado y modular
-- UI responsiva y accesible
-- Imágenes optimizadas con next/image
-- Linting y formateo automático
+## Recomendaciones adicionales
 
-## Créditos y recursos
-
-- Autor: [Dieguidev](https://github.com/Dieguidev)
-- Tailwind Components, Swiper.js, Prisma ORM, Zustand
+- Mantén tu entorno de desarrollo sincronizado con los archivos de ejemplo y configuración.
+- Usa los scripts y configuraciones provistas para asegurar calidad y consistencia en el código.
+- El panel de administración (`/admin`) está preparado para futuras extensiones.
+- El store global (`src/store/`) facilita la escalabilidad y el manejo de estado avanzado.
 
 ---
 
