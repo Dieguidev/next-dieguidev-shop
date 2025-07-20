@@ -2,6 +2,26 @@
   "name": "dieguidev-shop",
   "version": "0.1.0",
   "private": true,
+  "description": "Modern e-commerce app built with Next.js, TypeScript, Prisma, Tailwind CSS, Zustand, and Swiper.js. Includes authentication, cart, checkout, and admin features.",
+  "author": "Dieguidev <diegogaraycullas@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dieguidev/next-dieguidev-shop.git"
+  },
+  "license": "MIT",
+  "homepage": "https://github.com/Dieguidev/next-dieguidev-shop#readme",
+  "keywords": [
+    "nextjs",
+    "typescript",
+    "ecommerce",
+    "prisma",
+    "tailwindcss",
+    "zustand",
+    "swiper",
+    "react",
+    "shop",
+    "dieguidev"
+  ],
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
