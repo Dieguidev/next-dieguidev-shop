@@ -1,6 +1,8 @@
 'use client';
+import { generatePaginationNumbers } from "@/utils";
+import clsx from "clsx";
 import Link from "next/link";
-import { usePathname, useSearchParams } from "next/navigation";
+import { redirect, usePathname, useSearchParams } from "next/navigation";
 import { IoChevronBackOutline, IoChevronForwardOutline } from "react-icons/io5";
 
 interface PaginationProps {
@@ -11,11 +13,14 @@ export const Pagination = ({ totalPages }: PaginationProps) => {
 
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const currentPage = Number(searchParams.get('page')) ?? 1
 
-  console.log("Current Pathname:", pathname);
-  console.log("Current Search Params:", searchParams);
-  console.log("Current Page:", currentPage);
+  const pageString = searchParams.get('page') ?? 1;
+  const currentPage = isNaN(+pageString) ? 1 : Number(pageString);
+  if (currentPage < 1 || currentPage > totalPages || isNaN(+pageString)) {
+    redirect(pathname);
+  }
+
+  const allPages = generatePaginationNumbers(currentPage, totalPages);
 
   const createPageUrl = (pageNumber: number | string) => {
     const params = new URLSearchParams(searchParams)
@@ -47,17 +52,30 @@ export const Pagination = ({ totalPages }: PaginationProps) => {
             </Link>
           </li>
 
-          <li className="page-item"><Link
-            className="page-link relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300  text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-            href="#">1</Link></li>
+          {
+            allPages.map(page => (
+              <li key={page} className="page-item">
+                <Link
+                  className={
+                    clsx(
+                      "page-link relative block py-1.5 px-3 rounded border-0 outline-none transition-all duration-300",
+                      {
+                        'bg-blue-500 text-white shadow-md': page !== '...' && Number(page) === currentPage,
+                        'bg-transparent text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none': !(page !== '...' && Number(page) === currentPage)
+                      }
+                    )
+                  }
+                  href={createPageUrl(page!)}
+                >
+                  {page}
+                </Link>
+              </li>
+            ))
+          }
 
-          <li className="page-item active"><Link
-            className="page-link relative block py-1.5 px-3 rounded border-0 bg-blue-600 outline-none transition-all duration-300  text-white hover:text-white hover:bg-blue-600 shadow-md focus:shadow-md"
-            href="#">2 <span className="visually-hidden"></span></Link></li>
 
-          <li className="page-item"><Link
-            className="page-link relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300  text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
-            href="#">3</Link></li>
+
+
 
           <li className="page-item"><Link
             className="page-link relative block py-1.5 px-3 rounded border-0 bg-transparent outline-none transition-all duration-300  text-gray-800 hover:text-gray-800 hover:bg-gray-200 focus:shadow-none"
