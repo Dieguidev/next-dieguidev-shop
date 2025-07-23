@@ -4,9 +4,7 @@ import { initialData } from "@/seed/seed";
 import { notFound } from "next/navigation";
 
 interface ProductPageProps {
-  params: {
-    slug: string;
-  };
+  params: Promise<{ slug: string }>
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {

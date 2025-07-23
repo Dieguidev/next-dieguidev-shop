@@ -4,7 +4,7 @@ import { initialData } from "@/seed/seed";
 import { notFound } from "next/navigation";
 
 interface CategoryPageProps {
-  params: { id: Category };
+  params: Promise<{ id: Category }>;
 }
 const products = initialData.products;
 
