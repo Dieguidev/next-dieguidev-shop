@@ -14,7 +14,10 @@ import { inter } from "@/config/fonts";
 // });
 
 export const metadata: Metadata = {
-  title: "Dieguidev | Shop",
+  title: {
+    template: "%s | Dieguidev Shop",
+    default: "Dieguidev Shop",
+  },
   description: "A Next.js e-commerce application",
 };
 

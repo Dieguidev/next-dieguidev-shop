@@ -3,11 +3,32 @@ export const revalidate = 10080
 import { getProductBySlug } from "@/actions";
 import { ProductMobileSlideshow, ProductSlideshow, QuantitySelector, SizeSelector, StockLabel } from "@/components";
 import { titleFont } from "@/config/fonts";
+import { Metadata, ResolvingMetadata } from "next";
 
 import { notFound } from "next/navigation";
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>
+}
+
+export async function generateMetadata(
+  { params }: ProductPageProps,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  const slug = (await params).slug
+
+  // fetch post information
+  const product = await getProductBySlug(slug);
+
+  return {
+    title: product?.title,
+    description: product?.description,
+    openGraph: {
+      title: product?.title,
+      description: product?.description,
+      images: [`/products/${product?.images[1]}`],
+    }
+  }
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
