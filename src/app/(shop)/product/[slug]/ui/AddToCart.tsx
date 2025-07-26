@@ -11,6 +11,12 @@ interface AddToCartProps {
 export const AddToCart = ({ product }: AddToCartProps) => {
 
   const [size, setSize] = useState<Size | undefined>()
+  const [quantity, setQuantity] = useState<number>(1)
+
+  const addToCart = () => {
+    console.log(size, quantity);
+
+  }
 
   return (
     <>
@@ -23,13 +29,17 @@ export const AddToCart = ({ product }: AddToCartProps) => {
 
       {/* Selector de Cantidad */}
       <QuantitySelector
-        quantity={1}
+        quantity={quantity}
+        onQuantityChanged={setQuantity}
       />
 
 
 
       {/* Button */}
-      <button className="btn-primary my-5">
+      <button
+        onClick={addToCart}
+        className="btn-primary my-5"
+      >
         Agregar al carrito
       </button>
     </>
