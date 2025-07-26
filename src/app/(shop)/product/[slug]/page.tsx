@@ -1,11 +1,12 @@
 export const revalidate = 10080
 
 import { getProductBySlug } from "@/actions";
-import { ProductMobileSlideshow, ProductSlideshow, QuantitySelector, SizeSelector, StockLabel } from "@/components";
+import { ProductMobileSlideshow, ProductSlideshow, StockLabel } from "@/components";
 import { titleFont } from "@/config/fonts";
 import { Metadata, ResolvingMetadata } from "next";
 
 import { notFound } from "next/navigation";
+import { AddToCart } from "./ui/AddToCart";
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>
@@ -21,6 +22,7 @@ export async function generateMetadata(
   const product = await getProductBySlug(slug);
 
   return {
+    metadataBase: new URL('https://acme.com'),
     title: product?.title,
     description: product?.description,
     openGraph: {
@@ -65,22 +67,8 @@ export default async function ProductPage({ params }: ProductPageProps) {
         </h1>
         <p className="text-lg mb-5">${product.price}</p>
 
-        {/* Selector de Tallas */}
-        <SizeSelector
-          selectedSize={product.sizes[0]}
-          availableSizes={product.sizes}
-        />
-
-        {/* Selector de Cantidad */}
-        <QuantitySelector
-          quantity={1}
-        />
-
-
-        {/* Button */}
-        <button className="btn-primary my-5">
-          Agregar al carrito
-        </button>
+        {/* Selector de Tallas y Cantidad */}
+        <AddToCart product={product} />
 
         {/* Descripción */}
         <h3 className="font-bold text-sm">Descripción</h3>
