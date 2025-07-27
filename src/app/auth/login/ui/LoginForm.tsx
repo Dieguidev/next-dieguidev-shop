@@ -1,8 +1,10 @@
 'use client';
 
 import { authenticate } from "@/actions";
+import clsx from "clsx";
 import Link from "next/link";
 import { useActionState } from "react";
+import { IoInformationOutline } from "react-icons/io5";
 
 
 export const LoginForm = () => {
@@ -11,8 +13,9 @@ export const LoginForm = () => {
     authenticate,
     undefined,
   );
-  console.log(formAction);
 
+  console.log('errorMessage', errorMessage);
+  console.log('isPending', isPending);
 
   // const [state, dispatch] = useFormState(authenticate, undefined)
   // console.log('state', state);
@@ -37,10 +40,21 @@ export const LoginForm = () => {
         name="password"
       />
 
+      {errorMessage && (
+        <div className="flex flex-row mb-2">
+          <IoInformationOutline className="h-5 w-5 text-red-500" />
+          <p className="text-sm text-red-500">{errorMessage && 'Credenciales inválidas'}</p>
+        </div>
+      )}
+
       <button
+        disabled={isPending}
         type="submit"
-        className="btn-primary">
-        Ingresar
+        className={clsx({
+          "btn-primary": !isPending,
+          'btn-disable': isPending,
+        })}>
+        {!isPending ? 'Ingresar' : 'Cargando...'}
       </button>
 
 

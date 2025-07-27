@@ -47,7 +47,11 @@ export const Sidebar = () => {
           <input type="text" placeholder="Buscar" className="w-full bg-gray-50 rounded pl-10 py-1 pr-10 border-b-2 text-xl border-gray-200 focus:outline-none focus:border-blue-500" />
         </div>
 
-        <Link href="/" className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all">
+        <Link
+          href="/profile"
+          className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+          onClick={closeMenu}
+        >
           <IoPersonOutline size={30} />
           <span className="ml-3 text-xl">Perfil</span>
         </Link>
