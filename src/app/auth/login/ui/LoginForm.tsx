@@ -41,9 +41,9 @@ export const LoginForm = () => {
       />
 
       {errorMessage && (
-        <div className="flex flex-row mb-2">
-          <IoInformationOutline className="h-5 w-5 text-red-500" />
-          <p className="text-sm text-red-500">{errorMessage && 'Credenciales inválidas'}</p>
+        <div className="flex items-center mb-2 bg-yellow-50 border-l-4 border-yellow-400 p-2 rounded fade-in">
+          <IoInformationOutline className="h-6 w-6 text-yellow-700 mr-2" />
+          <p className="text-sm text-yellow-700 font-medium">{errorMessage}</p>
         </div>
       )}
 
@@ -52,7 +52,7 @@ export const LoginForm = () => {
         type="submit"
         className={clsx({
           "btn-primary": !isPending,
-          'btn-disable': isPending,
+          'btn-secondary': isPending,
         })}>
         {!isPending ? 'Ingresar' : 'Cargando...'}
       </button>
