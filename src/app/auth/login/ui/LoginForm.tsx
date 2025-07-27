@@ -3,16 +3,25 @@
 import { authenticate } from "@/actions";
 import clsx from "clsx";
 import Link from "next/link";
-import { useActionState } from "react";
+import { useRouter } from "next/navigation";
+import { useActionState, useEffect } from "react";
 import { IoInformationOutline } from "react-icons/io5";
 
 
 export const LoginForm = () => {
 
-  const [errorMessage, formAction, isPending] = useActionState(
+  const router = useRouter();
+  const [errorMessage, formAction, isPending,] = useActionState(
     authenticate,
     undefined,
   );
+
+  useEffect(() => {
+    if (errorMessage === "success") {
+      router.replace('/')
+    }
+  }, [errorMessage])
+
 
   console.log('errorMessage', errorMessage);
   console.log('isPending', isPending);
