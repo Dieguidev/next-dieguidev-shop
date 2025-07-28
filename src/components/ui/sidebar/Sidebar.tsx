@@ -4,9 +4,10 @@ import Link from "next/link"
 import { IoCloseOutline, IoLogInOutline, IoLogOutOutline, IoPeopleOutline, IoPersonOutline, IoSearchOutline, IoShirtOutline, IoTicketOutline } from "react-icons/io5"
 import { useUIStore } from "@/store"
 import clsx from "clsx"
-import { logout } from "@/actions"
-import { useSession } from "next-auth/react"
-import { useEffect, useState } from "react"
+
+import { signOut, useSession } from "next-auth/react"
+
+
 
 
 export const Sidebar = () => {
@@ -15,19 +16,14 @@ export const Sidebar = () => {
   const closeMenu = useUIStore(state => state.closeSideMenu);
   const { data: session } = useSession();
   const isAuthenticated = !!session?.user;
-  console.log(isAuthenticated);
-
-  // const [loaded, setLoaded] = useState(false);
-  // ;
-
-  // useEffect(() => {
-  //   setLoaded(true);
-  // }, [])
+  const isAdmin = session?.user?.role === 'admin';
 
 
-  // if (!loaded) {
-  //   return <p>Loading...</p>
-  // }
+  const handleLogout = async () => {
+    closeMenu();
+    await signOut({ callbackUrl: "/" });
+
+  };
 
 
 
@@ -66,30 +62,32 @@ export const Sidebar = () => {
           <input type="text" placeholder="Buscar" className="w-full bg-gray-50 rounded pl-10 py-1 pr-10 border-b-2 text-xl border-gray-200 focus:outline-none focus:border-blue-500" />
         </div>
 
-        <Link
-          href="/profile"
-          className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
-          onClick={closeMenu}
-        >
-          <IoPersonOutline size={30} />
-          <span className="ml-3 text-xl">Perfil</span>
-        </Link>
-
-        <Link href="/" className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all">
-          <IoTicketOutline size={30} />
-          <span className="ml-3 text-xl">Ordenes</span>
-        </Link>
-
         {
           isAuthenticated && (
-            <button
+            <>
+              <Link
+                href="/profile"
+                className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+                onClick={closeMenu}
+              >
+                <IoPersonOutline size={30} />
+                <span className="ml-3 text-xl">Perfil</span>
+              </Link>
 
-              onClick={logout}
-              className="flex w-full items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
-            >
-              <IoLogOutOutline size={30} />
-              <span className="ml-3 text-xl">Salir</span>
-            </button>
+              <Link href="/" className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all">
+                <IoTicketOutline size={30} />
+                <span className="ml-3 text-xl">Ordenes</span>
+              </Link>
+
+              <button
+
+                onClick={handleLogout}
+                className="flex w-full items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+              >
+                <IoLogOutOutline size={30} />
+                <span className="ml-3 text-xl">Salir</span>
+              </button>
+            </>
           )
         }
 
@@ -109,21 +107,28 @@ export const Sidebar = () => {
 
 
 
-        <div className="w-full h-px bg-gray-200 my-10" />
 
-        <Link href="/" className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all">
-          <IoShirtOutline size={30} />
-          <span className="ml-3 text-xl">Productos</span>
-        </Link>
+        {
+          isAdmin && (
+            <>
+              <div className="w-full h-px bg-gray-200 my-10" />
+              <Link href="/" className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all">
+                <IoShirtOutline size={30} />
+                <span className="ml-3 text-xl">Productos</span>
+              </Link>
 
-        <Link href="/" className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all">
-          <IoTicketOutline size={30} />
-          <span className="ml-3 text-xl">Ordenes</span>
-        </Link>
-        <Link href="/" className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all">
-          <IoPeopleOutline size={30} />
-          <span className="ml-3 text-xl">Usuarios</span>
-        </Link>
+              <Link href="/" className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all">
+                <IoTicketOutline size={30} />
+                <span className="ml-3 text-xl">Ordenes</span>
+              </Link>
+              <Link href="/" className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all">
+                <IoPeopleOutline size={30} />
+                <span className="ml-3 text-xl">Usuarios</span>
+              </Link>
+            </>
+          )
+        }
+
 
       </nav>
     </div>
