@@ -23,13 +23,8 @@ export const LoginForm = () => {
     }
   }, [errorMessage])
 
-
-  console.log('errorMessage', errorMessage);
-  console.log('isPending', isPending);
-
   // const [state, dispatch] = useFormState(authenticate, undefined)
   // console.log('state', state);
-
 
   return (
     // <form action={dispatch} className="flex flex-col">
