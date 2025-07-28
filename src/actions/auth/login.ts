@@ -10,8 +10,6 @@ export async function authenticate(
   formData: FormData
 ) {
   try {
-    console.log(formData);
-
     // await signIn('credentials', Object.fromEntries(formData));
     await signIn("credentials", {
       email: formData.get("email"),
