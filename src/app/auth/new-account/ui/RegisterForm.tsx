@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { SubmitHandler, useForm } from "react-hook-form";
 import clsx from 'clsx';
-import { registerUser } from "@/actions";
+import { login, registerUser } from "@/actions";
 import { useState } from "react";
+
 
 type FormInputs = {
   name: string;
@@ -13,6 +14,8 @@ type FormInputs = {
 }
 
 export const RegisterForm = () => {
+
+
 
   const [errorMessage, setErrorMessage] = useState('')
 
@@ -33,7 +36,8 @@ export const RegisterForm = () => {
       return
     }
 
-    console.log(resp);
+    await login(email.toLowerCase(), password);
+    window.location.replace('/');
 
   }
 
