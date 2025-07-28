@@ -73,7 +73,7 @@ Dieguidev Shop es una aplicación e-commerce moderna, desarrollada como parte de
 │   │   │   ├── orders/   # Listado y detalle de órdenes
 │   │   │   ├── product/  # Detalle de producto
 │   │   │   ├── products/ # Listado de productos
-│   │   │   └── ...
+│   ��   │   └── ...
 │   │   ├── auth/         # Login, registro, layout auth
 │   │   └── layout.tsx    # Layout global
 │   ├── components/       # Componentes reutilizables (UI, product, etc)
@@ -140,6 +140,21 @@ Dieguidev Shop es una aplicación e-commerce moderna, desarrollada como parte de
 - Usa los scripts y configuraciones provistas para asegurar calidad y consistencia en el código.
 - El panel de administración (`/admin`) está preparado para futuras extensiones.
 - El store global (`src/store/`) facilita la escalabilidad y el manejo de estado avanzado.
+
+## Contribuciones
+
+Si deseas contribuir a este proyecto, por favor sigue las pautas de contribución y abre un pull request. Agradecemos tus sugerencias y mejoras.
+
+## Pruebas
+
+Para ejecutar las pruebas automatizadas, utiliza el siguiente comando:
+```bash
+npm test
+```
+
+## Despliegue
+
+Para desplegar la aplicación en un entorno de producción, sigue las instrucciones de despliegue específicas de tu proveedor de hosting.
 
 ---
 
