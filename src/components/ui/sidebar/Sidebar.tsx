@@ -6,6 +6,7 @@ import { useUIStore } from "@/store"
 import clsx from "clsx"
 import { logout } from "@/actions"
 import { useSession } from "next-auth/react"
+import { useEffect, useState } from "react"
 
 
 export const Sidebar = () => {
@@ -13,8 +14,20 @@ export const Sidebar = () => {
   const isSideMenuOpen = useUIStore(state => state.isSideMenuOpen);
   const closeMenu = useUIStore(state => state.closeSideMenu);
   const { data: session } = useSession();
+  const isAuthenticated = !!session?.user;
+  console.log(isAuthenticated);
 
-  console.log('session', session);
+  // const [loaded, setLoaded] = useState(false);
+  // ;
+
+  // useEffect(() => {
+  //   setLoaded(true);
+  // }, [])
+
+
+  // if (!loaded) {
+  //   return <p>Loading...</p>
+  // }
 
 
 
@@ -67,22 +80,34 @@ export const Sidebar = () => {
           <span className="ml-3 text-xl">Ordenes</span>
         </Link>
 
-        <Link
-          href="/auth/login"
-          className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
-          onClick={closeMenu}
-        >
-          <IoLogInOutline size={30} />
-          <span className="ml-3 text-xl">Ingresar</span>
-        </Link>
+        {
+          isAuthenticated && (
+            <button
 
-        <button
-          onClick={logout}
-          className="flex w-full items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
-        >
-          <IoLogOutOutline size={30} />
-          <span className="ml-3 text-xl">Salir</span>
-        </button>
+              onClick={logout}
+              className="flex w-full items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+            >
+              <IoLogOutOutline size={30} />
+              <span className="ml-3 text-xl">Salir</span>
+            </button>
+          )
+        }
+
+        {
+          !isAuthenticated && (
+            <Link
+              href="/auth/login"
+              className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+              onClick={closeMenu}
+            >
+              <IoLogInOutline size={30} />
+              <span className="ml-3 text-xl">Ingresar</span>
+            </Link>
+          )
+        }
+
+
+
 
         <div className="w-full h-px bg-gray-200 my-10" />
 
