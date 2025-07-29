@@ -62,6 +62,7 @@ model Product {
   updatedAt    DateTime       @updatedAt
   createdAt    DateTime       @default(now())
   ProductImage ProductImage[]
+  OrderItem    OrderItem[]
 
   @@index([gender])
 }
@@ -92,6 +93,7 @@ model User {
 
   // relation to UserAddress one to one
   address UserAddress?
+  Order   Order[]
 
   @@index([email])
 }
@@ -100,9 +102,10 @@ model Country {
   id   String @id
   name String @unique
 
-  updatedAt   DateTime      @updatedAt
-  createdAt   DateTime      @default(now())
-  UserAddress UserAddress[]
+  updatedAt    DateTime       @updatedAt
+  createdAt    DateTime       @default(now())
+  UserAddress  UserAddress[]
+  OrderAddress OrderAddress[]
 }
 
 model UserAddress {
@@ -124,4 +127,50 @@ model UserAddress {
   // relation to User one to one
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
+}
+
+model Order {
+  id           String    @id @default(uuid())
+  subTotal     Float
+  tax          Float
+  total        Float
+  itemsInOrder Int
+  isPaid       Boolean
+  paidAt       DateTime?
+
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  // Relaciones
+  user         User          @relation(fields: [userId], references: [id])
+  userId       String
+  OrderItem    OrderItem[]
+  OrderAddress OrderAddress?
+}
+
+model OrderItem {
+  id        String  @id @default(uuid())
+  quantity  Int
+  price     Float
+  size      Size
+  // Relaciones
+  order     Order   @relation(fields: [orderId], references: [id])
+  orderId   String
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+}
+
+model OrderAddress {
+  id         String  @id @default(uuid())
+  firstName  String
+  lastName   String
+  address    String
+  address2   String?
+  postalCode String
+  city       String
+  phone      String
+  // Relaciones
+  country    Country @relation(fields: [countryId], references: [id])
+  countryId  String
+  Order      Order   @relation(fields: [orderId], references: [id])
+  orderId    String  @unique
 }
