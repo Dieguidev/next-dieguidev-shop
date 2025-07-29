@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { removeAddress, setUserAddress } from "@/actions";
 import { useSession } from "next-auth/react";
 import { Address } from "@/interfaces";
+import { useRouter } from "next/navigation";
 
 interface AddressFormProps {
   countries: Country[];
@@ -28,6 +29,8 @@ interface FormInputs {
 }
 
 export const AddressForm = ({ countries, userStoredAddress = {} }: AddressFormProps) => {
+
+  const router = useRouter();
 
   const { register, handleSubmit, formState: { isValid }, reset } = useForm<FormInputs>({
     defaultValues: {
@@ -53,16 +56,17 @@ export const AddressForm = ({ countries, userStoredAddress = {} }: AddressFormPr
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const onSubmit = (data: FormInputs) => {
-    console.log(data);
+  const onSubmit = async (data: FormInputs) => {
 
     setAddresss(data);
     const { rememberAddress, ...restAddress } = data;
-    if (data.rememberAddress) {
-      setUserAddress(restAddress, session!.user.id)
+    if (rememberAddress) {
+      await setUserAddress(restAddress, session!.user.id)
     } else {
       removeAddress(session!.user.id)
     }
+
+    router.push('/checkout')
   }
 
   return (

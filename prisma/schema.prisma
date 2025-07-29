@@ -113,6 +113,7 @@ model UserAddress {
   address2   String?
   postalCode String
   phone      String
+  city       String
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
