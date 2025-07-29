@@ -17,6 +17,8 @@ interface State {
 }
 
 export const useCartStore = create<State>()(
+  // Using Zustand's persist middleware to store cart data in local storage
+  // This allows the cart to persist across page reloads
   persist(
     (set, get) => ({
       cart: [],
