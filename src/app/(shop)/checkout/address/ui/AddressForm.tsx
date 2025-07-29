@@ -6,11 +6,13 @@ import { useForm } from "react-hook-form";
 import { Country } from "@/interfaces/country.interface";
 import { useAddressStore } from "@/store";
 import { useEffect } from "react";
-import { setUserAddress } from "@/actions";
+import { removeAddress, setUserAddress } from "@/actions";
 import { useSession } from "next-auth/react";
+import { Address } from "@/interfaces";
 
 interface AddressFormProps {
   countries: Country[];
+  userStoredAddress?: Partial<Address>
 }
 
 interface FormInputs {
@@ -25,11 +27,12 @@ interface FormInputs {
   rememberAddress: boolean;
 }
 
-export const AddressForm = ({ countries }: AddressFormProps) => {
+export const AddressForm = ({ countries, userStoredAddress = {} }: AddressFormProps) => {
 
   const { register, handleSubmit, formState: { isValid }, reset } = useForm<FormInputs>({
     defaultValues: {
-      // TODO: leer de la base de datos
+      ...userStoredAddress,
+      rememberAddress: false
     }
   });
 
@@ -51,12 +54,14 @@ export const AddressForm = ({ countries }: AddressFormProps) => {
   }, [])
 
   const onSubmit = (data: FormInputs) => {
+    console.log(data);
+
     setAddresss(data);
     const { rememberAddress, ...restAddress } = data;
     if (data.rememberAddress) {
       setUserAddress(restAddress, session!.user.id)
     } else {
-
+      removeAddress(session!.user.id)
     }
   }
 
