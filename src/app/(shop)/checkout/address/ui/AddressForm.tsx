@@ -3,6 +3,12 @@
 import clsx from "clsx";
 import { useForm } from "react-hook-form";
 
+import { Country } from "@/interfaces/country.interface";
+
+interface AddressFormProps {
+  countries: Country[];
+}
+
 interface FormInputs {
   firstName: string;
   lastName: string;
@@ -15,7 +21,7 @@ interface FormInputs {
   rememberAddress: boolean;
 }
 
-export const AddressForm = () => {
+export const AddressForm = ({ countries }: AddressFormProps) => {
 
   const { register, handleSubmit, formState: { isValid } } = useForm<FormInputs>({
     defaultValues: {
@@ -36,7 +42,7 @@ export const AddressForm = () => {
         <span>Nombres</span>
         <input
           type="text"
-          className="p-2 border rounded-md bg-gray-200"
+          className="p-2 rounded-md bg-gray-200"
           {...register('firstName', { required: true })}
         />
       </div>
@@ -45,7 +51,7 @@ export const AddressForm = () => {
         <span>Apellidos</span>
         <input
           type="text"
-          className="p-2 border rounded-md bg-gray-200"
+          className="p-2 rounded-md bg-gray-200"
           {...register('lastName', { required: true })}
         />
       </div>
@@ -54,7 +60,7 @@ export const AddressForm = () => {
         <span>Dirección</span>
         <input
           type="text"
-          className="p-2 border rounded-md bg-gray-200"
+          className="p-2 rounded-md bg-gray-200"
           {...register('address', { required: true })}
         />
       </div>
@@ -63,7 +69,7 @@ export const AddressForm = () => {
         <span>Dirección 2 (opcional)</span>
         <input
           type="text"
-          className="p-2 border rounded-md bg-gray-200"
+          className="p-2 rounded-md bg-gray-200"
           {...register('address2')}
         />
       </div>
@@ -73,7 +79,7 @@ export const AddressForm = () => {
         <span>Código postal</span>
         <input
           type="text"
-          className="p-2 border rounded-md bg-gray-200"
+          className="p-2 rounded-md bg-gray-200"
           {...register('postalCode', { required: true })}
         />
       </div>
@@ -82,7 +88,7 @@ export const AddressForm = () => {
         <span>Ciudad</span>
         <input
           type="text"
-          className="p-2 border rounded-md bg-gray-200"
+          className="p-2 rounded-md bg-gray-200"
           {...register('city', { required: true })}
         />
       </div>
@@ -90,11 +96,18 @@ export const AddressForm = () => {
       <div className="flex flex-col mb-2">
         <span>País</span>
         <select
-          className="p-2 border rounded-md bg-gray-200"
+          className="p-2 rounded-md bg-gray-200"
           {...register('country', { required: true })}
         >
           <option value="">[ Seleccione ]</option>
-          <option value="CRI">Costa Rica</option>
+          {
+            countries.map((country) => (
+              <option key={country.id} value={country.id}>
+                {country.name}
+              </option>
+            ))
+          }
+
         </select>
       </div>
 
@@ -102,7 +115,7 @@ export const AddressForm = () => {
         <span>Teléfono</span>
         <input
           type="text"
-          className="p-2 border rounded-md bg-gray-200"
+          className="p-2 rounded-md bg-gray-200"
           {...register('phone', { required: true })}
         />
       </div>
