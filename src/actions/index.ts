@@ -11,3 +11,5 @@ export * from "./country/get-countries";
 export * from "./address/set-user-address";
 export * from "./address/delete-address";
 export * from "./address/get-address";
+
+export * from "./order/place-order";
