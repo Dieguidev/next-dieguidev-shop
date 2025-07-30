@@ -13,3 +13,4 @@ export * from "./address/delete-address";
 export * from "./address/get-address";
 
 export * from "./order/place-order";
+export * from "./order/get-order-by-id";
