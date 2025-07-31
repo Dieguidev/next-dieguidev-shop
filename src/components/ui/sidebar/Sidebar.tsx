@@ -52,7 +52,7 @@ export const Sidebar = () => {
 
       {/* Sidemenu */}
       <nav className={
-        clsx("fixed p-5 right-0 top-0 w-[500px] h-screen bg-white z-20 shadow-2xl transform transition-all duration-300", {
+        clsx("fixed p-5 right-0 top-0 w-[500px] h-screen bg-white z-20 shadow-2xl transform transition-all duration-300 overflow-y-auto", {
           "translate-x-full": !isSideMenuOpen,
         })
       }>
@@ -112,16 +112,28 @@ export const Sidebar = () => {
           isAdmin && (
             <>
               <div className="w-full h-px bg-gray-200 my-10" />
-              <Link href="/" className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all">
+              <Link
+                href="/"
+                className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+                onClick={closeMenu}
+              >
                 <IoShirtOutline size={30} />
                 <span className="ml-3 text-xl">Productos</span>
               </Link>
 
-              <Link href="/" className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all">
+              <Link
+                href="/admin/orders"
+                className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+                onClick={closeMenu}
+              >
                 <IoTicketOutline size={30} />
                 <span className="ml-3 text-xl">Ordenes</span>
               </Link>
-              <Link href="/" className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all">
+              <Link
+                href="/"
+                className="flex items-center mt-10 p-2 hover:bg-gray-100 rounded transition-all"
+                onClick={closeMenu}
+              >
                 <IoPeopleOutline size={30} />
                 <span className="ml-3 text-xl">Usuarios</span>
               </Link>
