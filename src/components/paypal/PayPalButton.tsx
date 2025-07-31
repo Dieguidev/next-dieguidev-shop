@@ -1,6 +1,6 @@
 'use client'
 
-import { setTransactionId } from "@/actions";
+import { paypalCheckPayment, setTransactionId } from "@/actions";
 import { PayPalButtons, PayPalButtonsComponentProps, usePayPalScriptReducer } from "@paypal/react-paypal-js"
 import clsx from "clsx"
 
@@ -29,6 +29,7 @@ export const PayPalButton = ({ orderId, amount }: PayPalButtonProps) => {
       const transactionId = await actions.order.create({
         purchase_units: [
           {
+            invoice_id: orderId,
             amount: {
               value: `${roundedAmount}`,
               currency_code: 'USD',
@@ -50,27 +51,20 @@ export const PayPalButton = ({ orderId, amount }: PayPalButtonProps) => {
     }
   };
 
-  // const createOrder = async (data: CreateOrderData, actions: CreateOrderActions): Promise<string> => {
-  //   const transactionId = await actions.order.create({
-  //     purchase_units: [
-  //       {
-  //         amount: {
-  //           value: '100.00',
-  //           currency_code: 'USD',
-  //         }
-  //       }
-  //     ]
-  //   })
-
-  //   console.log('Transaction ID:', transactionId);
-
-  //   return transactionId;
-  // }
+  const onApprove: PayPalButtonsComponentProps["onApprove"] = async (data, actions) => {
+    try {
+      const details = await actions.order?.capture();
+      if (!details) return;
+      await paypalCheckPayment(details.id!)
+    } catch (error) {
+      console.error('Error capturing PayPal transaction:', error);
+    }
+  };
 
   return (
     <PayPalButtons
       createOrder={createOrder}
-    // onApprove={ }
+      onApprove={onApprove}
     />
     // <div className={
     //   clsx(
