@@ -2,7 +2,7 @@
 
 import { paypalCheckPayment, setTransactionId } from "@/actions";
 import { PayPalButtons, PayPalButtonsComponentProps, usePayPalScriptReducer } from "@paypal/react-paypal-js"
-import clsx from "clsx"
+
 
 interface PayPalButtonProps {
   orderId: string;
@@ -66,22 +66,5 @@ export const PayPalButton = ({ orderId, amount }: PayPalButtonProps) => {
       createOrder={createOrder}
       onApprove={onApprove}
     />
-    // <div className={
-    //   clsx(
-    //     "flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white mb-5",
-    //     {
-    //       'bg-red-500': !order!.isPaid,
-    //       'bg-green-700': order!.isPaid
-    //     }
-    //   )
-    // }>
-    //   <IoCardOutline size={30} />
-    //   {/* <span className="mx-2">Pendiente de pago</span> */}
-    //   {
-    //     order!.isPaid
-    //       ? <span className="mx-2">Pagada</span>
-    //       : <span className="mx-2">Pendiente de pago</span>
-    //   }
-    // </div>
   )
 }
