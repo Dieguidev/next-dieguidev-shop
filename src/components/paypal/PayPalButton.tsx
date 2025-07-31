@@ -1,10 +1,17 @@
 'use client'
 
-import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js"
+import { PayPalButtons, PayPalButtonsComponentProps, usePayPalScriptReducer } from "@paypal/react-paypal-js"
 import clsx from "clsx"
 
-export const PayPalButton = () => {
+interface PayPalButtonProps {
+  orderId: string;
+  amount: number;
+}
+
+export const PayPalButton = ({ orderId, amount }: PayPalButtonProps) => {
   const [{ isPending }] = usePayPalScriptReducer();
+
+  const roundedAmount = (Math.round(parseFloat(amount) * 100) / 100).toFixed(2);
 
   if (isPending) {
     return (
@@ -15,8 +22,55 @@ export const PayPalButton = () => {
     )
   }
 
+  const createOrder: PayPalButtonsComponentProps["createOrder"] = async (data, actions) => {
+    try {
+
+      const transactionId = await actions.order.create({
+        purchase_units: [
+          {
+            amount: {
+              value: `${roundedAmount}`,
+              currency_code: 'USD',
+            }
+          }
+        ],
+        intent: 'CAPTURE'
+      })
+
+      console.log('Transaction ID:', transactionId);
+
+      return transactionId;
+    } catch (error) {
+
+      console.error(error);
+
+      throw error;
+
+    }
+  };
+
+  // const createOrder = async (data: CreateOrderData, actions: CreateOrderActions): Promise<string> => {
+  //   const transactionId = await actions.order.create({
+  //     purchase_units: [
+  //       {
+  //         amount: {
+  //           value: '100.00',
+  //           currency_code: 'USD',
+  //         }
+  //       }
+  //     ]
+  //   })
+
+  //   console.log('Transaction ID:', transactionId);
+
+  //   return transactionId;
+  // }
+
   return (
-    <PayPalButtons />
+    <PayPalButtons
+      createOrder={createOrder}
+    // onApprove={ }
+    />
     // <div className={
     //   clsx(
     //     "flex items-center rounded-lg py-2 px-3.5 text-xs font-bold text-white mb-5",

@@ -8,7 +8,7 @@ interface ProviderProps {
 }
 
 export const Providers = ({ children }: ProviderProps) => {
-  console.log(process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID);
+
 
   return (
     <PayPalScriptProvider options={{
