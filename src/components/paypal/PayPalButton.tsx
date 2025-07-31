@@ -1,5 +1,6 @@
 'use client'
 
+import { setTransactionId } from "@/actions";
 import { PayPalButtons, PayPalButtonsComponentProps, usePayPalScriptReducer } from "@paypal/react-paypal-js"
 import clsx from "clsx"
 
@@ -11,7 +12,7 @@ interface PayPalButtonProps {
 export const PayPalButton = ({ orderId, amount }: PayPalButtonProps) => {
   const [{ isPending }] = usePayPalScriptReducer();
 
-  const roundedAmount = (Math.round(parseFloat(amount) * 100) / 100).toFixed(2);
+  const roundedAmount = (Math.round(amount * 100) / 100).toFixed(2);
 
   if (isPending) {
     return (
@@ -37,7 +38,7 @@ export const PayPalButton = ({ orderId, amount }: PayPalButtonProps) => {
         intent: 'CAPTURE'
       })
 
-      console.log('Transaction ID:', transactionId);
+      await setTransactionId(orderId, transactionId);
 
       return transactionId;
     } catch (error) {
