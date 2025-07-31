@@ -103,10 +103,6 @@ export default async function OrderPage({ params }: OrderPageProps) {
                   />
                 )
               }
-
-
-
-
             </div>
           </div>
 
