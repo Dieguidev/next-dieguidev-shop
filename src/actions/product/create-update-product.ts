@@ -1,10 +1,12 @@
 "use server";
-
+import { v2 as cloudinary } from "cloudinary";
 import { Gender, Size } from "@/generated/prisma";
 import { Product } from "@/interfaces";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import z from "zod";
+
+cloudinary.config(process.env.CLOUDINARY_URL || "");
 
 const productSchema = z.object({
   id: z.string().uuidv4().optional().nullable(),
@@ -44,9 +46,11 @@ export const createUpdateProduct = async (formData: FormData) => {
   try {
     const prismaTx = await prisma.$transaction(async (tx) => {
       let product: Product;
+
       const tagsArray = rest.tags
         .split(",")
         .map((tag) => tag.trim().toLowerCase());
+
       if (id) {
         product = await tx.product.update({
           where: { id },
@@ -63,6 +67,20 @@ export const createUpdateProduct = async (formData: FormData) => {
             sizes: { set: rest.sizes as Size[] },
             tags: { set: tagsArray },
           },
+        });
+      }
+
+      if (formData.has("images")) {
+        const images = await uploadImages(formData.getAll("images") as File[]);
+        if (!images) {
+          throw new Error("Error uploading images, rolling back transaction");
+        }
+
+        await tx.productImage.createMany({
+          data: images.map((image) => ({
+            productId: product.id,
+            url: image!,
+          })),
         });
       }
 
@@ -85,5 +103,30 @@ export const createUpdateProduct = async (formData: FormData) => {
       ok: false,
       message: "Revisar los logs, no se pudo actualizar",
     };
+  }
+};
+
+const uploadImages = async (images: File[]) => {
+  try {
+    const uploadPromises = images.map(async (image) => {
+      try {
+        const buffer = await image.arrayBuffer();
+        const base64Image = Buffer.from(buffer).toString("base64");
+
+        return cloudinary.uploader
+          .upload(`data:image/png;base64,${base64Image}`, {
+            folder: "next-dieguidev-shop/products",
+          })
+          .then((r) => r.secure_url);
+      } catch (error) {
+        console.log(error);
+        return null;
+      }
+    });
+    const uploadImages = await Promise.all(uploadPromises);
+    return uploadImages;
+  } catch (error) {
+    console.error("Error uploading images:", error);
+    return null;
   }
 };
