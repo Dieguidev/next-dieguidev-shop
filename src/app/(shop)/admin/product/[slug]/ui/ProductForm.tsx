@@ -4,11 +4,12 @@ import { createUpdateProduct } from "@/actions";
 import { Product, ProductImage } from "@/interfaces";
 import clsx from "clsx";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 
 
 interface ProductFormProps {
-  product: Product & { ProductImage?: ProductImage[] };
+  product: Partial<Product> & { ProductImage?: ProductImage[] };
   categories: {
     name: string;
     id: string;
@@ -33,6 +34,8 @@ interface FormInputs {
 
 export const ProductForm = ({ product, categories }: ProductFormProps) => {
 
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -43,7 +46,7 @@ export const ProductForm = ({ product, categories }: ProductFormProps) => {
   } = useForm<FormInputs>({
     defaultValues: {
       ...product,
-      tags: product.tags.join(', '),
+      tags: product.tags?.join(', '),
       sizes: product.sizes ?? [],
     }
   });
@@ -74,7 +77,11 @@ export const ProductForm = ({ product, categories }: ProductFormProps) => {
     const formData = new FormData();
 
     const { ...productToSave } = data;
-    formData.append('id', product.id ?? '');
+
+    if (product.id) {
+      formData.append('id', product.id ?? '');
+    }
+
     formData.append('title', productToSave.title);
     formData.append('slug', productToSave.slug);
     formData.append('description', productToSave.description);
@@ -85,7 +92,14 @@ export const ProductForm = ({ product, categories }: ProductFormProps) => {
     formData.append('categoryId', productToSave.categoryId);
     formData.append('gender', productToSave.gender);
 
-    const { ok } = await createUpdateProduct(formData)
+    const { ok, product: updatedProduct } = await createUpdateProduct(formData)
+
+    if (ok) {
+      router.replace(`/admin/product/${updatedProduct?.slug}`);
+    } else {
+      alert('Error al guardar el producto');
+      return
+    }
 
   };
 
@@ -155,6 +169,12 @@ export const ProductForm = ({ product, categories }: ProductFormProps) => {
 
       {/* Selector de tallas y fotos */}
       <div className="w-full">
+
+        <div className="flex flex-col mb-2">
+          <span>Inventario</span>
+          <input type="number" className="p-2  rounded-md bg-gray-200" {...register('inStock', { required: true, min: 0 })} />
+        </div>
+
         {/* As checkboxes */}
         <div className="flex flex-col">
 
@@ -202,7 +222,7 @@ export const ProductForm = ({ product, categories }: ProductFormProps) => {
                 <div key={image.id} className="relative">
                   <Image
                     src={`/products/${image.url}`}
-                    alt={product.title}
+                    alt={product.title || ''}
                     width={300}
                     height={300}
                     className="rounded-t shadow-md"

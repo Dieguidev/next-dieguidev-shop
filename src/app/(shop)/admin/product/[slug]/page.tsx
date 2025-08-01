@@ -17,7 +17,7 @@ export default async function ProductAdminPage({ params }: ProductAdminPageProps
   ])
 
 
-  if (!product) {
+  if (!product && slug !== 'new') {
     redirect('/admin/products')
   }
 
@@ -26,13 +26,13 @@ export default async function ProductAdminPage({ params }: ProductAdminPageProps
     redirect('/admin/products')
   }
 
-  const title = slug === 'new' ? 'Crear Producto' : `Editar Producto: ${product.title}`;
+  const title = slug === 'new' ? 'Crear Producto' : `Editar Producto: ${product?.title}`;
 
   return (
     <>
       <Title title={title} />
 
-      <ProductForm product={product} categories={categories} />
+      <ProductForm product={product ?? {}} categories={categories} />
     </>
   );
 }
