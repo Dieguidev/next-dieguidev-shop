@@ -26,8 +26,6 @@ export interface ProductImage {
   id: number;
   url: string;
   productId: string;
-  updatedAt: Date;
-  createdAt: Date;
 }
 
 export type Category = "men" | "women" | "kid" | "unisex";

@@ -1,12 +1,13 @@
 "use client";
 
 import { Product, ProductImage } from "@/interfaces";
+import clsx from "clsx";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import { type } from '../../../../../../generated/prisma/index';
+
 
 interface ProductFormProps {
-  product: Product & { ProductImage: ProductImage[] };
+  product: Product & { ProductImage?: ProductImage[] };
   categories: {
     name: string;
     id: string;
@@ -34,7 +35,10 @@ export const ProductForm = ({ product, categories }: ProductFormProps) => {
   const {
     register,
     handleSubmit,
-    formState: { isValid }
+    formState: { isValid },
+    getValues,
+    setValue,
+    watch
   } = useForm<FormInputs>({
     defaultValues: {
       ...product,
@@ -42,6 +46,31 @@ export const ProductForm = ({ product, categories }: ProductFormProps) => {
       sizes: product.sizes ?? [],
     }
   });
+
+  watch('sizes')
+
+  const onSizeChange = (size: string) => {
+    // const sizes = getValues('sizes');
+
+    // if (sizes.includes(size)) {
+    //   sizes.splice(sizes.indexOf(size), 1);
+    // } else {
+    //   sizes.push(size);
+    // }
+
+    const sizes = new Set(getValues('sizes'));
+
+    if (sizes.has(size)) {
+      sizes.delete(size);
+    } else {
+      sizes.add(size);
+    }
+
+    setValue('sizes', Array.from(sizes));
+
+    console.log('sizes', sizes);
+
+  }
 
   const onSubmit = (data: FormInputs) => {
     console.log({ data });
@@ -123,7 +152,18 @@ export const ProductForm = ({ product, categories }: ProductFormProps) => {
             {
               sizes.map(size => (
                 // bg-blue-500 text-white <--- si está seleccionado
-                <div key={size} className="flex  items-center justify-center w-10 h-10 mr-2  rounded-md">
+                <div
+                  onClick={() => onSizeChange(size)}
+                  key={size}
+                  className={
+                    clsx(
+                      'p-2 rounded-md cursor-pointer mr-2 mb-2 w-14 transition-all text-center',
+                      {
+                        'bg-blue-500 text-white': getValues('sizes').includes(size),
+                      }
+                    )
+                  }
+                >
                   <span>{size}</span>
                 </div>
               ))
@@ -146,7 +186,7 @@ export const ProductForm = ({ product, categories }: ProductFormProps) => {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {
-              product.ProductImage.map(image => (
+              product.ProductImage?.map(image => (
                 <div key={image.id} className="relative">
                   <Image
                     src={`/products/${image.url}`}

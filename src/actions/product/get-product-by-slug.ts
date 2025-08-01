@@ -11,6 +11,7 @@ export const getProductBySlug = async (slug: string) => {
           select: {
             url: true,
             id: true,
+            productId: true,
           },
         },
       },
