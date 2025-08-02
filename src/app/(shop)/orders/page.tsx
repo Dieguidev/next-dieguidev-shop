@@ -18,8 +18,6 @@ export default async function OrdersPage() {
     redirect('/auth/login')
   }
 
-  console.log(JSON.stringify(orders, null, 2));
-
   return (
     <>
       <Title title="Orders" />

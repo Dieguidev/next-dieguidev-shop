@@ -40,7 +40,6 @@ export const PlaceOrder = () => {
     }))
 
     const resp = await placeOrder(address, productsToOrder);
-    console.log('resp', resp);
 
     if (!resp.ok) {
       setIsPlacingOrder(false)

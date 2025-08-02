@@ -23,11 +23,9 @@ export const LoginForm = () => {
     }
   }, [errorMessage])
 
-  // const [state, dispatch] = useFormState(authenticate, undefined)
-  // console.log('state', state);
+
 
   return (
-    // <form action={dispatch} className="flex flex-col">
     <form action={formAction} className="flex flex-col">
 
       <label htmlFor="email">Correo electrónico</label>
