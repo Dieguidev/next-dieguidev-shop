@@ -3,7 +3,7 @@ export const revalidate = 10080
 import { getProductBySlug } from "@/actions";
 import { ProductMobileSlideshow, ProductSlideshow, StockLabel } from "@/components";
 import { titleFont } from "@/config/fonts";
-import { Metadata, ResolvingMetadata } from "next";
+import { Metadata } from "next";
 
 import { notFound } from "next/navigation";
 import { AddToCart } from "./ui/AddToCart";
@@ -14,7 +14,7 @@ interface ProductPageProps {
 
 export async function generateMetadata(
   { params }: ProductPageProps,
-  parent: ResolvingMetadata
+  // parent: ResolvingMetadata
 ): Promise<Metadata> {
   const slug = (await params).slug
 

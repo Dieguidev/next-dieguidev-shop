@@ -1,7 +1,7 @@
 export interface Product {
   id: string;
   description: string;
-  // images: string[];
+  images: string[];
   inStock: number;
   price: number;
   sizes: Size[];

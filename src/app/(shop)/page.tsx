@@ -5,9 +5,9 @@ import { Pagination, ProductsGrid, Title } from "@/components";
 import { redirect } from "next/navigation";
 
 interface HomeProps {
-  searchParams?: {
+  searchParams?: Promise<{
     page?: string;
-  };
+  }>;
 }
 
 export default async function Home({ searchParams }: HomeProps) {

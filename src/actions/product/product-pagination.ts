@@ -50,6 +50,8 @@ export const getPaginatedProductsWithImages = async ({
       })),
     };
   } catch (error) {
+    console.log(error);
+
     throw new Error(
       "Ha ocurrido un error inesperado. Por favor, intenta nuevamente."
     );

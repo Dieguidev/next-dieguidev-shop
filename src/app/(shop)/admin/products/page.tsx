@@ -6,15 +6,13 @@ import { getPaginatedProductsWithImages } from '@/actions';
 
 import { Pagination, ProductImage, Title } from '@/components';
 import { currencyFormat } from '@/utils';
-import Image from 'next/image';
+
 
 import Link from 'next/link';
 
 
 interface ProductsAdminPageProps {
-  searchParams?: {
-    page?: string;
-  };
+  searchParams?: Promise<{ page?: string }>
 }
 
 export default async function ProductsAdminPage({ searchParams }: ProductsAdminPageProps) {

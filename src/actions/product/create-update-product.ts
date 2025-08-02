@@ -1,7 +1,7 @@
 "use server";
 import { v2 as cloudinary } from "cloudinary";
 import { Gender, Size } from "@/generated/prisma";
-import { Product } from "@/interfaces";
+
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import z from "zod";
@@ -45,7 +45,7 @@ export const createUpdateProduct = async (formData: FormData) => {
 
   try {
     const prismaTx = await prisma.$transaction(async (tx) => {
-      let product: Product;
+      let product;
 
       const tagsArray = rest.tags
         .split(",")

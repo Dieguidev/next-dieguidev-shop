@@ -128,11 +128,14 @@ export const placeOrder = async (
       ok: true,
       order: prismaTx.order,
       prismaTx,
+      message: "Orden creada correctamente",
     };
-  } catch (error: any) {
-    return {
-      ok: false,
-      message: error?.message,
-    };
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return {
+        ok: false,
+        message: error.message,
+      };
+    }
   }
 };

@@ -8,10 +8,10 @@ import { Category } from "@/interfaces";
 import { notFound } from "next/navigation";
 
 interface CategoryPageProps {
-  params: { gender: Category };
-  searchParams?: {
+  params: Promise<{ gender: Category }>;
+  searchParams?: Promise<{
     page?: string;
-  };
+  }>;
 }
 
 
