@@ -22,7 +22,7 @@ export async function generateMetadata(
   const product = await getProductBySlug(slug);
 
   return {
-    metadataBase: new URL('https://acme.com'),
+    metadataBase: new URL(process.env.FRONTEND_URL || ''),
     title: product?.title,
     description: product?.description,
     openGraph: {
