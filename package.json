@@ -24,9 +24,10 @@
   ],
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "build": "npm run prisma:deploy &&next build",
     "start": "next start",
     "lint": "next lint",
+    "prisma:deploy": "npx prisma migrate deploy && npx prisma generate",
     "seed2": "ts-node src/seed/seed-database.ts",
     "seed": "prisma db seed"
   },
